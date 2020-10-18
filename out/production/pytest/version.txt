@@ -1,0 +1,3 @@
+Server:src/Server.class:localhost 54321:1
+Client:src/Client.class:localhost 5431 9550.txt:6:1 2
+versione:pluto:10
