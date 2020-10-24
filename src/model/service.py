@@ -5,7 +5,7 @@ class Service():
         self.args = args
         self.thread = threads
         self.stdin = stdin
-        self.timestamp = str(timestamp)
+        self.timestamp = "%.20f" % timestamp
         self.s_timestapm = str(s_timestapm)
         self.d_graphs = str(d_graphs)
 

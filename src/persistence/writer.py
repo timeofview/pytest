@@ -3,7 +3,7 @@ import subprocess
 import threading
 import time
 
-FILE_NAME = '../version.txt'
+SERVICES_FILE = 'services.csv'
 
 output_data = None
 
@@ -28,45 +28,6 @@ class ExcThread(threading.Thread):
         output_data.write(str(out) + '\n')
 
 
-def write():
-    global output_data
-    file = open(FILE_NAME)
-    lines = file.read().splitlines()
-    if len(lines) != 3:
-        print('Caro utente, il programma si aspettava 3 righe')
-
-    server = lines[0].split(':')
-    server_path = server[1]
-    server_args = server[2]
-    server_instances = int(server[3])
-
-    client = lines[1].split(':')
-    client_path = client[1]
-    client_args = client[2]
-    client_instances = int(client[3])
-    client_stdin = client[4]
-
-    run_config = lines[2].split(':')
-    version = run_config[1]
-    num_iterate = int(run_config[2])
-
-    output_data = open(version + '_' + str(client_instances) + '.csv', 'a+')
-    # output_data.write(', '.join(['java_class','args','stdin','time'])+'\n')
-
-    file.close()
-
-    java_path = os.path.dirname(server_path)
-    java_class = os.path.splitext(os.path.basename(server_path))[0]
-    exec_server(java_path, java_class, server_args, '', server_instances)
-
-    # server starts
-    time.sleep(0.1)
-
-    java_path = os.path.dirname(client_path)
-    java_class = os.path.splitext(os.path.basename(client_path))[0]
-    exec_client(java_path, java_class, client_args, client_stdin, client_instances, num_iterate)
-
-
 def exec_client(java_path, java_class, args, stdin, n, num_iterate):
     for j in range(num_iterate):
         threads = list()
@@ -78,22 +39,27 @@ def exec_client(java_path, java_class, args, stdin, n, num_iterate):
             thread.join()
     output_data.close()
 
-#FIXME
-def exec_server(java_path, java_class, args, stdin, n):
-    for i in range(n):
-        ExcThread(java_path, java_class, args, stdin).start()
 
 def write_configs(configs_file, configs):
     file = open(configs_file, "w")
     for config in configs:
         file.write(config.to_string())
+    file.close()
 
-def write_timestamp(services_file, services):
-    file = open(services_file, "w")
+def write_services(services_file, services):
+    file = open(services_file, "a")
     for service in services:
         file.write(service.to_string())
+    file.close()
+
+def write_service(services_file,service):
+    services_file.write(service.to_string())
+
+def get_service_file(services_file=SERVICES_FILE):
+    return open(services_file, "a")
 
 def write_groups(groups_file, groups):
     file = open(groups_file, "w")
     for group in groups:
         file.write(group.to_string())
+    file.close()

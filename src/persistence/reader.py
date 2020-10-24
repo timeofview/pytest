@@ -32,8 +32,8 @@ def read_timestamps(timestamps):
     file = open(timestamps, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
-        version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs = row
-        result.append(Service(version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs))
+        version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs,iterations = row
+        result.append(Service(version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs,iterations))
     return result
 
 
