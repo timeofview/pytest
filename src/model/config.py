@@ -10,5 +10,5 @@ class Config:
         self.stdin = stdin
         self.s_timestapm = str(s_timestapm)
         self.d_graphs = str(d_graphs)
-    def toString(self):
+    def to_string(self):
         return ','.join(vars(self).values())

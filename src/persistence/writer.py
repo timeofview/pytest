@@ -83,7 +83,17 @@ def exec_server(java_path, java_class, args, stdin, n):
     for i in range(n):
         ExcThread(java_path, java_class, args, stdin).start()
 
-def write_configs(settings, configs):
-    file = open(settings, "w")
+def write_configs(configs_file, configs):
+    file = open(configs_file, "w")
     for config in configs:
-        file.write(config.toString())
+        file.write(config.to_string())
+
+def write_timestamp(services_file, services):
+    file = open(services_file, "w")
+    for service in services:
+        file.write(service.to_string())
+
+def write_groups(groups_file, groups):
+    file = open(groups_file, "w")
+    for group in groups:
+        file.write(group.to_string())

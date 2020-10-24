@@ -2,47 +2,46 @@ import csv
 import glob
 import os
 from collections import defaultdict
+from model.config import Config
+from model.service import Service
+from model.group import Group
 
 
 class Client:
-    def __init__(self, row,version,n):
+    def __init__(self, row, version, n):
         self.type = row[0]
         self.args = row[1]
         self.stdin = row[2]
         self.timestamp = float(row[3])
-        self.version=version
+        self.version = version
         self.n = int(n)
 
 
-
-def read_csv(path='.'):
-    list_files = glob.glob(path+'/*.csv')
-    clients = list()
-    for csv_file in list_files:
-        file=open(cs(path+'/*.csv')v_file)
-        csv_file= csv_file.replace('.\\','').replace('./','')
-        csv_reader = csv.reader(file, delimiter=',')
-        version,n=str(csv_file).replace('.csv','').split("_")
-        for row in csv_reader:
-            clients.append(Client(row,version,n))
-        file.close()
-    return clients
-
-
-
-
-def group_by(clients):
+def read_configs(settings):
     result = list()
-    for c0 in clients:
-        tmp=list()
-        tmp.append(c0)
-        clients.remove(c0)
-        for c1 in clients:
-            if c0.type==c1.type and c0.version==c1.version and c0.n == c1.n:
-                tmp.append(c1)
-                clients.remove(c1)
-        result.append(tmp)
+    file = open(settings, 'r')
+    cvs_reader = csv.reader(file, delimiter=',')
+    for row in cvs_reader:
+        version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs = row
+        result.append(Config(version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs))
     return result
 
-def read_configs(settings):
-    file = open()
+
+def read_timestamps(timestamps):
+    result = list()
+    file = open(timestamps, 'r')
+    cvs_reader = csv.reader(file, delimiter=',')
+    for row in cvs_reader:
+        version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs = row
+        result.append(Service(version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs))
+    return result
+
+
+def read_groups(groups_file):
+    result = list()
+    file = open(groups_file, 'r')
+    cvs_reader = csv.reader(file, delimiter=',')
+    for row in cvs_reader:
+        groupid, subgroupid, version, name, threads, stdin, draw_templates, draw_avg = row
+        result.append(Group(groupid, subgroupid, version, name, threads, stdin, draw_templates, draw_avg))
+    return result
