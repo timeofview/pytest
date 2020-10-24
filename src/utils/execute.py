@@ -14,13 +14,14 @@ class Executor(threading.Thread):
 
     def run(self):
         threads = list()
-        for i in range(self.config.iterations):
-            for j in range(self.config.thread):
-                thread = Executor(self.config,self.output_file)
+        for i in range(int(self.config.iterations)):
+            for j in range(int(self.config.threads)):
+                thread = Execute(self.config,self.output_file)
                 threads.append(thread)
                 thread.start()
-        for index, thread in enumerate(threads):
-            thread.join()
+        if (self.config.join=='1'):
+            for index, thread in enumerate(threads):
+                thread.join()
 
 class Execute(threading.Thread):
     def __init__(self,config,output_file):
@@ -29,29 +30,30 @@ class Execute(threading.Thread):
         self.output_file = output_file
 
     def run(self):
+        args = self.config.args.split()
         start = time.time()
         if self.config.extension == 'java':
-            cmd = ['java', '-cp', self.config.path, self.config.filename, self.config.args]
+            cmd = ['java', '-cp', self.config.path, self.config.filename]
         elif self.config.extension == 'c':
-            cmd = [self.config.path, '/',self.config.filename, self.config.args]
+            cmd = [self.config.path, '/',self.config.filename]
         else:
             raise ValueError('Wrong extenstion')
+        cmd.extend(args)
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdout, stderr = proc.communicate(self.stdin.encode())
+        stdout, stderr = proc.communicate(self.config.stdin.encode())
         print(stdout.decode())
         end = time.time() - start
-        service = Service(self.config.version,self.config.name,self.config.args,self.config.threads,self.config.stdin,end)
-        writer.write_service(self.output_file,service)
+        if self.config.s_timestapm=='1':
+            service = Service(self.config.version,self.config.name,self.config.args,self.config.threads,self.config.stdin,end,self.config.iterations)
+            writer.write_service(self.output_file,service)
 
 
-def exec(configs,service_file):
+def exec(configs,output_file):
     threads = list()
-    output_file = writer.get_service_file(service_file)
     for config in configs:
         thread = Executor(config,output_file)
         threads.append(thread)
         thread.start()
     for index, thread in enumerate(threads):
         thread.join()
-    output_file.close()
 

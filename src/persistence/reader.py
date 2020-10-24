@@ -22,18 +22,20 @@ def read_configs(settings):
     file = open(settings, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
-        version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs = row
-        result.append(Config(version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs))
+        version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs, iterations, join = row
+        result.append(
+            Config(version, name, path, filename, extension, args, threads, stdin, s_timestapm, d_graphs, iterations,
+                   join))
     return result
 
 
-def read_timestamps(timestamps):
+def read_services(services_file):
     result = list()
-    file = open(timestamps, 'r')
+    file = open(services_file, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
-        version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs,iterations = row
-        result.append(Service(version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs,iterations))
+        version, name, args, threads, stdin, timestamp, s_timestapm, d_graphs, iterations = row
+        result.append(Service(version, name, args, threads, stdin, float(timestamp), s_timestapm, d_graphs, iterations))
     return result
 
 
