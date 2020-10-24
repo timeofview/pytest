@@ -3,7 +3,7 @@ import subprocess
 import threading
 import time
 
-FILE_NAME = 'version.txt'
+FILE_NAME = '../version.txt'
 
 output_data = None
 
@@ -82,3 +82,8 @@ def exec_client(java_path, java_class, args, stdin, n, num_iterate):
 def exec_server(java_path, java_class, args, stdin, n):
     for i in range(n):
         ExcThread(java_path, java_class, args, stdin).start()
+
+def write_configs(settings, configs):
+    file = open(settings, "w")
+    for config in configs:
+        file.write(config.toString())

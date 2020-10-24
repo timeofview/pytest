@@ -19,8 +19,8 @@ def read_csv(path='.'):
     list_files = glob.glob(path+'/*.csv')
     clients = list()
     for csv_file in list_files:
-        file=open(csv_file)
-        csv_file= csv_file.replace('.\\','')
+        file=open(cs(path+'/*.csv')v_file)
+        csv_file= csv_file.replace('.\\','').replace('./','')
         csv_reader = csv.reader(file, delimiter=',')
         version,n=str(csv_file).replace('.csv','').split("_")
         for row in csv_reader:
@@ -43,3 +43,6 @@ def group_by(clients):
                 clients.remove(c1)
         result.append(tmp)
     return result
+
+def read_configs(settings):
+    file = open()
