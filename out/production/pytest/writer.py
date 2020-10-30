@@ -76,6 +76,7 @@ def exec_client(java_path, java_class, args, stdin, n, num_iterate):
             thread.start()
         for index, thread in enumerate(threads):
             thread.join()
+    output_data.close()
 
 #FIXME
 def exec_server(java_path, java_class, args, stdin, n):

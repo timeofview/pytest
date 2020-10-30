@@ -1,11 +1,12 @@
-import writer
-import reader
-import draw
+from controller import controller
+
 
 def main():
-    writer.write()
-    groups = reader.group_by(reader.read_csv())
-    draw.draw(groups)
+    controller.save()
+    controller.run()
+    print('test')
+    exit(0)
+
 
 if __name__ == '__main__':
     main()
