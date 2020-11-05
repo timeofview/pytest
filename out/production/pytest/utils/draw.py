@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 def draw(groups):
     avgs=[]
     names=[]
-    if not os.path.exists('img'):
-        os.mkdir('img')
+    if not os.path.exists('../img'):
+        os.mkdir('../img')
     for clients in groups:
         nums=[]
         count =0
