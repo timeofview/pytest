@@ -1,32 +1,37 @@
-SERVICES_FILE = 'services.csv'
-
-output_data = None
+OUTCOME_FILE = 'outcome.csv'
 
 
-def write_configs(configs_file, configs):
-    file = open(configs_file, "w")
-    for config in configs:
-        file.write(config.to_string() + '\n')
+def write_settings(settings_filename, settings):
+    file = open(settings_filename, "w")
+    for setting in settings:
+        file.write(setting.to_string() + '\n')
     file.close()
 
 
-def write_services(services_file, services):
-    file = open(services_file, "a")
-    for service in services:
-        file.write(service.to_string() + '\n')
+def write_outcomes(outcomes_filename, outcomes):
+    file = open(outcomes_filename, "w")
+    for outcome in outcomes:
+        file.write(outcome.to_string() + '\n')
     file.close()
 
 
-def write_service(services_file, service):
-    services_file.write(service.to_string() + '\n')
+def write_outcome(outcomes_file, outcome):
+    outcomes_file.write(outcome.to_string() + '\n')
 
 
-def get_service_file(services_file=SERVICES_FILE):
-    return open(services_file, "a")
+def get_outcome_file(outcome_filename=OUTCOME_FILE):
+    return open(outcome_filename, "a")
 
 
-def write_groups(groups_file, groups):
-    file = open(groups_file, "w")
+def write_groups(groups_filename, groups):
+    file = open(groups_filename, "w")
     for group in groups:
         file.write(group.to_string() + '\n')
+    file.close()
+
+
+def write_plots(plots_filename, plots):
+    file = open(plots_filename, "w")
+    for plot in plots:
+        file.write(plot.to_string() + '\n')
     file.close()
