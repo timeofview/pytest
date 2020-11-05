@@ -17,7 +17,7 @@ def read_settings(settings_filename):
         result.append(
             Setting(int(id), version, name, path, filename, extension, args, stdin, int(threads), int(iterations),
                     bool(concurrency),
-                    bool(s_timestamp), bool(d_graphs)))
+                    float(s_timestamp), bool(d_graphs)))
     return result
 
 
@@ -38,10 +38,9 @@ def read_groups(groups_filename,outcomes_filename):
     for row in cvs_reader:
         id, outcomes_id, draw_templates, draw_avg = row[0:4]
         color = row[4:7]
-        outcomes_id=int(outcomes_id)
         outcomes = read_outcomes(outcomes_filename)
         for outcome in outcomes:
-            if outcome.id != outcomes_id and outcome in outcomes:
+            if outcome.id not in intoutcomes_id:
                 outcomes.remove(outcome)
         result.append(Group(id, outcomes, color, draw_templates, draw_avg))
     return result
