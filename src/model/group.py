@@ -2,36 +2,36 @@ import random
 
 
 class Group():
-    def __init__(self, groupid, subgroupid, services, draw_templates=1, draw_avg=1,
-                 color=[255,0,0]):
-        self.groupid = str(groupid)
-        self.subgroupid = str(subgroupid)
-        self.services = services
-        self.draw_templates = str(draw_templates)
-        self.draw_avg = str(draw_avg)
+    def __init__(self, id, outcomes, color=[0, 0, 255], draw_templates=True, draw_avg=True):
+        self.id = str(id)
+        self.outcomes = outcomes
+        self.draw_templates = draw_templates
+        self.draw_avg = draw_avg
         self.color = color
 
     @staticmethod
-    def get_groups(services):
-        subgroupid=0
+    def get_groups(outcomes):
+        id = 0
         groups = list()
-        for s0 in services:
-            services = list()
-            services.append(s0)
-            services.remove(s0)
-            for s1 in services:
-                if s0.name == s1.name and s0.version == s1.version and s0.threads == s1.threads and s0.stdin == s1.stdin:
-                    services.append(s1)
-                    services.remove(s1)
-            groups.append(Group(0,subgroupid,services,1,1,Group.random_color()))
-            subgroupid+=1
+        for outcome0 in outcomes:
+            group_outcomes = list()
+            for outcome1 in outcomes:
+                if outcome0.id == outcome1.id:
+                    group_outcomes.append(outcome1)
+                    if outcome1 in outcomes:
+                        outcomes.remove(outcome1)
+                    if outcome0 in outcomes:
+                        outcomes.remove(outcome0)
+            groups.append(Group(id, group_outcomes))
+            id += 1
         return groups
 
     @staticmethod
     def random_color():
-        rgbl=[255,0,0]
+        rgbl = [255, 0, 0]
         random.shuffle(rgbl)
         return tuple(rgbl)
 
     def to_string(self):
-        return ','.join([self.groupid,self.subgroupid,self.draw_templates,self.draw_avg,str(self.color)])
+        return ','.join(
+            [self.id, str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), str(self.color)])
