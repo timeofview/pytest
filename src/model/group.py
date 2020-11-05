@@ -34,4 +34,4 @@ class Group():
 
     def to_string(self):
         return ','.join(
-            [self.id, str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), str(self.color)])
+            [self.id, str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), ','.join(str(e) for e in self.color)])
