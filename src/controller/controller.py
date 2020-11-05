@@ -1,23 +1,37 @@
 from persistence import writer
 from persistence import reader
-from utils import execute
-from model.group import Group
+from utils import threads_manager
+from utils import draw
 
-SETTINGS_FILE_NAME = 'settings.csv'
-SERVICE_FILE_NAME = 'out/service_file.csv'
-GROUPS_FILE_NAME = 'out/groups.csv'
 
-def save(configs=None):
-    #Non ci sono contolli
-    if configs==None or len(configs)==0:
-        configs = reader.read_configs(SETTINGS_FILE_NAME)
-    writer.write_configs(SETTINGS_FILE_NAME,configs)
+SETTINGS_FILENAME = 'settings.csv'
+OUTCOMES_FILENAME = 'out/service_file.csv'
+GROUPS_FILENAME = 'out/groups.csv'
+PLOTS_FILENAME = 'out/groups.csv'
 
-def run(configs=None):
-    if configs==None or len(configs)==0:
-        configs = reader.read_configs(SETTINGS_FILE_NAME)
-    output_file = writer.get_service_file(SERVICE_FILE_NAME)
-    execute.exec(configs,output_file)
+def save_settings(settings):
+    if settings!=None or len(settings)>0:
+        writer.write_settings(SETTINGS_FILENAME, settings)
+
+def run(settings=None):
+    if settings==None or len(settings)==0:
+        settings = reader.read_settings(SETTINGS_FILENAME)
+    output_file = writer.get_settings_file(OUTCOMES_FILENAME)
+    threads_manager.exec(settings, output_file)
     output_file.close()
-    groups = Group.get_groups(reader.read_services(SERVICE_FILE_NAME))
-    writer.write_groups(GROUPS_FILE_NAME,groups)
+
+def save_groups(groups,plots):
+    if groups!=None and len(groups)>0 and plots!=None and len(plots)>0:
+        writer.write_groups(GROUPS_FILENAME,groups)
+        writer.write_plots(PLOTS_FILENAME,plots)
+
+def read_plots():
+    return reader.read_plots(PLOTS_FILENAME,GROUPS_FILENAME,OUTCOMES_FILENAME)
+
+def read_settings():
+    return reader.read_settings(SETTINGS_FILENAME)
+
+def draw(plots):
+    #TODO
+    #manca draws
+    print()
