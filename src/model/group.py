@@ -3,10 +3,10 @@ import random
 
 class Group():
     def __init__(self, id, outcomes, color=[0, 0, 255], draw_templates=True, draw_avg=True):
-        self.id = str(id)
+        self.id = int(id)
         self.outcomes = outcomes
-        self.draw_templates = draw_templates
-        self.draw_avg = draw_avg
+        self.draw_templates = bool(draw_templates)
+        self.draw_avg = bool(draw_avg)
         self.color = color
 
     @staticmethod
@@ -34,4 +34,4 @@ class Group():
 
     def to_string(self):
         return ','.join(
-            [self.id, str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), ','.join(str(e) for e in self.color)])
+            [str(self.id), str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), ','.join(str(e) for e in self.color)])

@@ -1,6 +1,6 @@
 class Plot:
     def __init__(self, id, groups):
-        self.id = id
+        self.id = int(id)
         self.groups = groups
 
     def to_string(self):
