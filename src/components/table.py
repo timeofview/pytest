@@ -5,11 +5,11 @@ from .row import SettingRow
 
 
 class TableSettings:
-    def __init__(self, settings):
-        self.settings = settings
+    def __init__(self, controller):
+        self.controller = controller
         self.table = BoxLayout(orientation='vertical')
         self.rows = list()
-        self.set_settings(settings)
+        self.set_settings(controller.get_settings())
         self.labels = BoxLayout(size_hint=(.9, .05))
         self.labels.add_widget(Label(text='Name'))
         self.labels.add_widget(Label(text='Version'))
@@ -21,12 +21,12 @@ class TableSettings:
         self.labels.add_widget(Label(text='Save timestamp'))
         self.update_rows()
 
-    def set_settings(self, settings):
-        for setting in settings:
+    def set_settings(self, ):
+        for setting in self.controller.get_settings:
             self.rows.append(SettingRow(setting))
 
     def add_setting(self, setting):
-        self.settings.append(setting)
+        self.controller.add_setting(setting)
         row = SettingRow(setting)
         self.rows.append(row)
         self.table.add_widget(row)
