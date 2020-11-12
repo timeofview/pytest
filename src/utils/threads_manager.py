@@ -36,7 +36,7 @@ class Starter(threading.Thread):
 
         if self.setting.extension == 'java':
             cmd = ['java', '-cp', self.setting.path, self.setting.filename]
-        elif self.setting.extension == 'c':
+        elif self.setting.extension == '' or self.setting.extension == 'exe':
             cmd = [self.setting.path, '/', self.setting.filename]
         else:
             raise ValueError('Wrong extenstion')

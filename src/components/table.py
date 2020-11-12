@@ -18,12 +18,23 @@ class TableSettings:
         self.labels.add_widget(Label(text='Stdin'))
         self.labels.add_widget(Label(text='Threads'))
         self.labels.add_widget(Label(text='Iterations'))
+        self.labels.add_widget(Label(text='Concurrency'))
         self.labels.add_widget(Label(text='Save timestamp'))
         self.update_rows()
 
-    def set_settings(self ):
+    def set_settings(self):
         for setting in self.controller.get_settings():
             self.rows.append(SettingRow(setting))
+
+    def update_settings(self):
+        new_settings = list()
+        for row in self.rows:
+            widgets = row.get_children()
+            new_settings.append(
+                self.controller.get_setting_from_row(widgets[8].text, widgets[7].text, widgets[6].text, widgets[5].text,
+                                                     widgets[4].text, widgets[3].text, widgets[2].text,
+                                                     widgets[1].active, widgets[0].active))
+        self.controller.set_settings(new_settings)
 
     def add_setting(self, setting):
         self.controller.add_setting(setting)

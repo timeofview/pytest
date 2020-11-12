@@ -19,14 +19,23 @@ class Controller():
     def get_settings(self):
         return self.settings
 
-    def get_settings_from_row(self, name='', version='', path='', args='', stdin='', threads=1, iterations=1, s_timestamp=True):
-           return Setting(id=self.settings[len(self.settings) - 1], version=version, path='\\'.join(path.split('\\')[0:-1]),
-                    filename=os.path.basename(path), extension=os.path.splitext(path)[1], args=args, stdin=stdin,
-                    threads=int(threads), iterations=int(iterations), s_timestamp=bool(s_timestamp))
+    def set_settings(self, settings):
+        self.settings = settings
+
+    def get_setting_from_row(self, name, version, path, args, stdin, threads, iterations,concurrency, s_timestamp):
+        setting = Setting(id=(self.settings[len(self.settings) - 1].id + 1), version=version,
+                          path=os.path.dirname(path),
+                          name=name,
+                          filename=os.path.basename(path).split('.')[0], extension=os.path.splitext(path)[1], args=args, stdin=stdin,
+                          threads=int(threads), iterations=int(iterations), concurrency = bool(concurrency),s_timestamp=bool(s_timestamp))
+        # FIXME
+        self.settings.append(setting)
+        return setting
 
     def add_setting(self, name='', version='', path='', args='', stdin='', threads=1, iterations=1, s_timestamp=True):
         self.settings.append(
-            Setting(id=self.settings[len(self.settings) - 1], version=version, path='\\'.join(path.split('\\')[0:-1]),
+            Setting(id=(self.settings[len(self.settings) - 1].id + 1), version=version, name=name,
+                    path='\\'.join(path.split('\\')[0:-1]),
                     filename=os.path.basename(path), extension=os.path.splitext(path)[1], args=args, stdin=stdin,
                     threads=int(threads), iterations=int(iterations), s_timestamp=bool(s_timestamp)))
 

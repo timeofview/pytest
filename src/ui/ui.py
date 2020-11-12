@@ -17,7 +17,7 @@ class Tab(TabbedPanel):
 class UI(App):
     def build(self):
         height = 800
-        width = 1000
+        width = 1200
 
         settings_layout = GridLayout(cols=2)
 
@@ -58,6 +58,7 @@ class UI(App):
         self.settings_table.add_setting()
 
     def save_settings(self, instance):
+        self.settings_table.update_settings()
         self.my_controller.save_settings()
 
     def run_settings(self, instance):

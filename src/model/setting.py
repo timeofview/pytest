@@ -1,6 +1,6 @@
 class Setting:
     def __init__(self, id, version, name, path, filename, extension, args, stdin, threads=1, iterations=1,
-                 concurrency=True, s_timestamp=1, d_graphs=1):
+                 concurrency=True, s_timestamp=True, d_graphs=True):
         self.id = int(id)
         self.version = version
         self.name = name

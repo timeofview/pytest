@@ -16,8 +16,8 @@ def read_settings(settings_filename):
         id, version, name, path, filename, extension, args, stdin, threads, iterations, concurrency, s_timestamp, d_graphs = row
         result.append(
             Setting(int(id), version, name, path, filename, extension, args, stdin, int(threads), int(iterations),
-                    bool(concurrency),
-                    bool(s_timestamp), bool(d_graphs)))
+                    concurrency == 'True',
+                    s_timestamp == 'True', d_graphs == 'True'))
     return result
 
 
@@ -31,14 +31,14 @@ def read_outcomes(outcomes_filename):
     return result
 
 
-def read_groups(groups_filename,outcomes_filename):
+def read_groups(groups_filename, outcomes_filename):
     result = list()
     file = open(groups_filename, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
         id, outcomes_id, draw_templates, draw_avg = row[0:4]
         color = row[4:7]
-        outcomes_id=int(outcomes_id)
+        outcomes_id = int(outcomes_id)
         outcomes = read_outcomes(outcomes_filename)
         for outcome in outcomes:
             if outcome.id != outcomes_id and outcome in outcomes:
@@ -47,14 +47,14 @@ def read_groups(groups_filename,outcomes_filename):
     return result
 
 
-def read_plots(plots_file, groups_filename,outcomes_filename):
+def read_plots(plots_file, groups_filename, outcomes_filename):
     result = list()
     file = open(plots_file, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
         id = row[0]
         group_ids = row[1:]
-        groups = read_groups(groups_filename,outcomes_filename)
+        groups = read_groups(groups_filename, outcomes_filename)
         for group in groups:
             if group.id not in group_ids:
                 groups.remove(group)
