@@ -32,6 +32,16 @@ class Group():
         random.shuffle(rgbl)
         return tuple(rgbl)
 
+    def set_color(self, color):
+        self.color = color
+
+    def set_draw_templates(self, draw_templates):
+        self.draw_templates = draw_templates
+
+    def set_draw_avg(self, draw_avg):
+        self.draw_avg = draw_avg
+
     def to_string(self):
         return ','.join(
-            [str(self.id), str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg), ','.join(str(e) for e in self.color)])
+            [str(self.id), str(self.outcomes[0].id), str(self.draw_templates), str(self.draw_avg),
+             ','.join(str(e) for e in self.color)])
