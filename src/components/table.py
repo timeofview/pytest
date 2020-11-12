@@ -9,7 +9,7 @@ class TableSettings:
         self.controller = controller
         self.table = BoxLayout(orientation='vertical')
         self.rows = list()
-        self.set_settings(controller.get_settings())
+        self.set_settings()
         self.labels = BoxLayout(size_hint=(.9, .05))
         self.labels.add_widget(Label(text='Name'))
         self.labels.add_widget(Label(text='Version'))
@@ -21,8 +21,8 @@ class TableSettings:
         self.labels.add_widget(Label(text='Save timestamp'))
         self.update_rows()
 
-    def set_settings(self, ):
-        for setting in self.controller.get_settings:
+    def set_settings(self ):
+        for setting in self.controller.get_settings():
             self.rows.append(SettingRow(setting))
 
     def add_setting(self, setting):

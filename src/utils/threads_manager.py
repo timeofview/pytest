@@ -19,7 +19,7 @@ class Threader(threading.Thread):
                 thread = Starter(self.setting, self.output_file)
                 threads.append(thread)
                 thread.start()
-        if (self.setting.join):
+        if (self.setting.concurrency):
             for index, thread in enumerate(threads):
                 thread.join()
 
@@ -46,7 +46,7 @@ class Starter(threading.Thread):
         stdout, stderr = proc.communicate(self.setting.stdin.encode())
         print(stdout.decode())
         end = time.time() - start
-        if self.setting.s_timestapm:
+        if self.setting.s_timestamp:
             outcome = Outcome(self.setting.id, end)
             writer.write_outcome(self.output_file, outcome)
 

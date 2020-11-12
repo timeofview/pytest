@@ -6,10 +6,10 @@ from utils import threads_manager
 from model.setting import Setting
 from utils import draw
 
-SETTINGS_FILENAME = '../../test/settings.csv'
-OUTCOMES_FILENAME = 'out/service_file.csv'
-GROUPS_FILENAME = 'out/groups.csv'
-PLOTS_FILENAME = 'out/groups.csv'
+SETTINGS_FILENAME = '../../out/settings.csv'
+OUTCOMES_FILENAME = '../../out/outcome.csv'
+GROUPS_FILENAME = '../../out/groups.csv'
+PLOTS_FILENAME = '../../out/plots.csv'
 
 
 class Controller():
@@ -18,6 +18,11 @@ class Controller():
 
     def get_settings(self):
         return self.settings
+
+    def get_settings_from_row(self, name='', version='', path='', args='', stdin='', threads=1, iterations=1, s_timestamp=True):
+           return Setting(id=self.settings[len(self.settings) - 1], version=version, path='\\'.join(path.split('\\')[0:-1]),
+                    filename=os.path.basename(path), extension=os.path.splitext(path)[1], args=args, stdin=stdin,
+                    threads=int(threads), iterations=int(iterations), s_timestamp=bool(s_timestamp))
 
     def add_setting(self, name='', version='', path='', args='', stdin='', threads=1, iterations=1, s_timestamp=True):
         self.settings.append(
@@ -34,7 +39,7 @@ class Controller():
     def run(self, settings=None):
         if settings == None or len(settings) == 0:
             settings = reader.read_settings(SETTINGS_FILENAME)
-        output_file = writer.get_settings_file(OUTCOMES_FILENAME)
+        output_file = writer.get_outcome_file(OUTCOMES_FILENAME)
         threads_manager.exec(settings, output_file)
         output_file.close()
 

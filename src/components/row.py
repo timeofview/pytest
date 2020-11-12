@@ -2,6 +2,7 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.textinput import TextInput
+from model.setting import Setting
 
 
 class SettingRow:
@@ -20,6 +21,7 @@ class SettingRow:
         self.row.add_widget(TextInput(text=str(setting.threads)))
         self.row.add_widget(TextInput(text=str(setting.iterations)))
         self.row.add_widget(CheckBox(active=setting.s_timestamp))
+
 
     def get_row(self):
         return self.row

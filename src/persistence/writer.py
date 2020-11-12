@@ -1,4 +1,4 @@
-OUTCOME_FILE = 'outcome.csv'
+OUTCOME_FILE = '../../outcome.csv'
 
 
 def write_settings(settings_filename, settings):
