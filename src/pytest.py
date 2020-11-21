@@ -1,10 +1,11 @@
-from controller import controller
+from controller.controller import Controller
+from ui.cui import Cui
 
 
 def main():
-    controller.save()
-    controller.run()
-    print('test')
+    controller = Controller()
+    cui = Cui(controller)
+    cui.start()
     exit(0)
 
 

@@ -18,3 +18,4 @@ class Setting:
     def to_string(self):
         setting = map(lambda x: str(x), vars(self).values())
         return ','.join(setting)
+

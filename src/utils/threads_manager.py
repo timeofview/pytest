@@ -34,7 +34,7 @@ class Starter(threading.Thread):
         args = self.setting.args.split()
         stdin = '\n'.join(self.setting.stdin.split("@@@"))
 
-        if self.setting.extension == 'java':
+        if self.setting.extension == 'class':
             cmd = ['java', '-cp', self.setting.path, self.setting.filename]
         elif self.setting.extension == '' or self.setting.extension == 'exe':
             cmd = [self.setting.path, '/', self.setting.filename]
@@ -43,7 +43,7 @@ class Starter(threading.Thread):
         cmd.extend(args)
         start = time.time()
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdout, stderr = proc.communicate(self.setting.stdin.encode())
+        stdout, stderr = proc.communicate(stdin.encode())
         print(stdout.decode())
         end = time.time() - start
         if self.setting.s_timestamp:

@@ -26,8 +26,9 @@ def read_outcomes(outcomes_filename):
     file = open(outcomes_filename, 'r')
     cvs_reader = csv.reader(file, delimiter=',')
     for row in cvs_reader:
-        id, timestamp = row
-        result.append(Outcome(int(id), float(timestamp)))
+        if row:
+            id, timestamp = row
+            result.append(Outcome(int(id), float(timestamp)))
     return result
 
 

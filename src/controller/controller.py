@@ -1,5 +1,6 @@
 import os
 
+from model.group import Group
 from persistence import writer
 from persistence import reader
 from utils import threads_manager
@@ -7,16 +8,16 @@ from model.setting import Setting
 from model.plot import Plot
 from utils import draw
 
-SETTINGS_FILENAME = '../../out/settings.csv'
-OUTCOMES_FILENAME = '../../out/outcome.csv'
-GROUPS_FILENAME = '../../out/groups.csv'
-PLOTS_FILENAME = '../../out/plots.csv'
+SETTINGS_FILENAME = '../out/settings.csv'
+OUTCOMES_FILENAME = '../out/outcome.csv'
+GROUPS_FILENAME = '../out/groups.csv'
+PLOTS_FILENAME = '../out/plots.csv'
 
 
 class Controller():
     def __init__(self):
         self.settings = self.read_settings()
-        self.plots = self.read_plots()
+        self.plots = list()
 
     def get_settings(self):
         return self.settings
@@ -48,6 +49,7 @@ class Controller():
             settings = self.settings
         if len(settings) > 0:
             writer.write_settings(SETTINGS_FILENAME, settings)
+        print("Settings saved")
 
     def run(self, settings=None):
         if settings == None or len(settings) == 0:
@@ -55,18 +57,26 @@ class Controller():
         output_file = writer.get_outcome_file(OUTCOMES_FILENAME)
         threads_manager.exec(settings, output_file)
         output_file.close()
+        self.plots.append(Plot(len(self.plots), self.get_groups(reader.read_outcomes(OUTCOMES_FILENAME))))
+        print("Runned")
 
-    def save_groups(self, plots):
-        groups = plots.groups
+    def get_groups(self, outcomes):
+        return Group.get_groups(outcomes)
+
+    def save_groups(self, plots=None):
+        if plots is None:
+            plots = self.plots
+        groups = list()
+        for plot in plots:
+            groups.extend(plot.groups)
         if groups != None and len(groups) > 0 and plots != None and len(plots) > 0:
             writer.write_groups(GROUPS_FILENAME, groups)
             writer.write_plots(PLOTS_FILENAME, plots)
 
     def read_plots(self):
-        return reader.read_plots(PLOTS_FILENAME, GROUPS_FILENAME, OUTCOMES_FILENAME)
+        self.plots = reader.read_plots(PLOTS_FILENAME, GROUPS_FILENAME, OUTCOMES_FILENAME)
 
     def update_plot(self, plot_id, group_id, color, draw_templates, draw_avg):
-
         for p in self.plots:
             for g in p.groups:
                 if g.id == group_id:
@@ -84,13 +94,13 @@ class Controller():
                 p.groups.append(g)
                 break
         if not founded:
-            self.plots(Plot(id=(self.plots[len(self.plots) - 1].id + 1)),list(g))
-
+            self.plots(Plot(id=(self.plots[len(self.plots) - 1].id + 1)), list(g))
 
     def read_settings(self):
         return reader.read_settings(SETTINGS_FILENAME)
 
-    def draw(self, plots):
-        # TODO
-        # manca draws
-        print()
+    def draw(self, plots=None):
+        if plots is None:
+            plots = self.plots
+
+        draw.draw(plots, self.settings)
